@@ -1,0 +1,16 @@
+config_version=5
+
+[application]
+config/name="3DS texture region milestone A"
+run/main_scene="res://main.tscn"
+
+[display]
+window/size/viewport_width=400
+window/size/viewport_height=240
+window/size/window_width_override=400
+window/size/window_height_override=240
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+environment/defaults/default_clear_color=Color(0.12549, 0.25098, 0.75294, 1)

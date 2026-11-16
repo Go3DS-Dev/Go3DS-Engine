@@ -72,11 +72,23 @@ void OS_3DS::run() {
     }
 
     main_loop->initialize();
-    while (!Main::iteration())
+    // Region accounting is not Godot allocation accounting. Validate the kernel
+    // query before subtracting: emulators can expose inconsistent region values.
+    s64 region_used = 0;
+    Result memory_result = svcGetSystemInfo(&region_used, 0, MEMREGION_APPLICATION);
+    u32 region_total = osGetMemRegionSize(MEMREGION_APPLICATION);
+    if (R_SUCCEEDED(memory_result) && region_used >= 0 && uint64_t(region_used) <= region_total && region_total != 0) {
+        printf("Application region: %llu / %lu bytes used\n", (unsigned long long)region_used, (unsigned long)region_total);
+    } else {
+        printf("Application region unavailable: rc=%08lX total=%lu used=%lld\n", (unsigned long)memory_result, (unsigned long)region_total, (long long)region_used);
+    }
+#ifndef DEBUG_ENABLED
+    printf("Godot allocation tracking disabled in release (reports 0).\n");
+#endif
+    printf("Citro2D Godot canvas test. START exits.\n");
+    while (aptMainLoop() && !Main::iteration())
     {
         DisplayServer::get_singleton()->process_events();
-        gspWaitForVBlank();
-        gfxSwapBuffers();
         hidScanInput();
         u32 kDown = hidKeysDown();
         if (kDown & KEY_START)
@@ -104,13 +116,18 @@ void OS_3DS::delete_main_loop() {
 }
 
 uint64_t OS_3DS::get_static_memory_usage() const {
-    return get_static_memory_peak_usage() - get_free_static_memory();
+    return OS::get_static_memory_usage();
 }
 uint64_t OS_3DS::get_static_memory_peak_usage() const{
-    return osGetMemRegionSize(MEMREGION_APPLICATION);
+    return OS::get_static_memory_peak_usage();
 }
 uint64_t OS_3DS::get_free_static_memory() const{
-    return osGetMemRegionFree(MEMREGION_APPLICATION);
+    s64 used = 0;
+    const u32 total = osGetMemRegionSize(MEMREGION_APPLICATION);
+    if (R_FAILED(svcGetSystemInfo(&used, 0, MEMREGION_APPLICATION)) || used < 0 || uint64_t(used) > total) {
+        return 0; // Unavailable; never wrap an unsigned subtraction.
+    }
+    return total - uint64_t(used);
 }
 
 bool OS_3DS::_check_internal_feature_support(const String &p_feature) {

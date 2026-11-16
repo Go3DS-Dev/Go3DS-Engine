@@ -1,117 +1,430 @@
-# Godot Engine 4 for 3DS
+# 🎮 Go3DS Engine
 
-## What is it?
+**Godot 4 for Nintendo 3DS**
 
-This repository contains an unfinished port of the Godot 4 game engine for the Nintendo 3DS.
+*Make games in Godot. Play them on your Nintendo 3DS.*
 
-The goal is to be able to develop 3DS games using the Godot Engine.
+Go3DS Engine is an experimental, open-source port of the Godot 4 game engine for the Nintendo 3DS family of handheld consoles.
 
-The renderer is not yet functional, however, the engine does start and run gdscript code headless.
+Built upon the original [Godot 4 Nintendo 3DS port by SeleDreams](https://github.com/SeleDreams/godot-4-3ds), Go3DS aims to make it possible to develop homebrew games using familiar Godot features such as scenes, nodes, GDScript, sprites, and 2D physics.
 
-## How does this work
+The project currently focuses on **2D game development**, with the original Nintendo 3DS as its primary performance target.
 
-The godot runtime gets bundled in a 3DSX with the content romfs directory present in platform/3ds/romfs.
+Go3DS is an unofficial community project and is not affiliated with Nintendo or the Godot Foundation.
 
-Godot, when starting uses the arguments `--main-pack romfs:/Game.pck --display-driver 3ds --audio-driver Dummy`
+---
 
-As such, if you want to change the project loaded by godot on startup, you will need to change the Game.pck that is bundled in the romfs directory.
+## 🚧 Development Status
 
-## Is this legal?
+**Go3DS is currently experimental and under active development.**
 
-Only open source SDKs are used for the development of this port.
+The original port could execute GDScript but lacked a functional renderer. Go3DS development has since introduced an experimental 2D rendering system using Citro2D and Citro3D.
 
-No Nintendo SDKs are used in any part of it, as such there are no legal issues with it.
+Basic rendering tests have successfully run in the Azahar Nintendo 3DS emulator, including tests with multiple sprites, texture regions, transformations, and camera movement.
 
-## Building
+The engine is not yet ready for general-purpose game development. Features may be incomplete, unstable, or subject to change.
 
-In order to build it, you will need to have Scons as well as Devkitpro's SDKs installed with the DevkitARM toolchain and libctru.
+There are currently no guarantees of compatibility with existing Godot projects.
 
-You will also need to have the following portlibs installed : 3ds-freetype, 3ds-bzip2, 3ds-libpng and 3ds-zlib.
+---
 
-Devkitpro's install instructions are available at : https://devkitpro.org/wiki/Getting_Started
+## 🤖 100% Vibe-Coded
 
-Ensure that devkitpro/tools/bin is in your environment PATH so that 3dsxtool and picasso can be called by the build system (I do plan to make it instead rely on the devkitpro path defined to make it easier in the long run).
+**Yes. Go3DS is fully vibe-coded.**
 
-You can check if it is the case by typing `3dsxtool` in the command line, if you get an error that says it isn't found, you'll need to add the path to your PATH environment variable.
+The new development of Go3DS Engine is driven through AI-assisted programming, primarily using **OpenAI Codex**.
 
-Once you have everything, you should be able to build godot 3DS using
-`scons platform=3ds target=template_release devkitpro=/path/to/devkitpro`
+Rather than manually implementing each feature, development is directed through prompts, experimentation, build testing, debugging, and iterative feedback.
 
-# Godot Engine
+This includes work on the renderer, Nintendo 3DS platform integration, compatibility improvements, and additional engine functionality.
 
-<p align="center">
-  <a href="https://godotengine.org">
-    <img src="logo_outlined.svg" width="400" alt="Godot Engine logo">
-  </a>
-</p>
+### What does this mean?
 
-## 2D and 3D cross-platform game engine
+- New Go3DS development is primarily generated and modified by AI.
+- The project maintainer directs development goals, features, and priorities.
+- Implementations are evaluated through compilation, testing, and debugging.
+- AI-generated code may contain bugs, inefficient implementations, or unexpected behavior.
+- Community code reviews, bug fixes, and improvements are welcome.
 
-**[Godot Engine](https://godotengine.org) is a feature-packed, cross-platform
-game engine to create 2D and 3D games from a unified interface.** It provides a
-comprehensive set of [common tools](https://godotengine.org/features), so that
-users can focus on making games without having to reinvent the wheel. Games can
-be exported with one click to a number of platforms, including the major desktop
-platforms (Linux, macOS, Windows), mobile platforms (Android, iOS), as well as
-Web-based platforms and [consoles](https://docs.godotengine.org/en/latest/tutorials/platform/consoles.html).
+**Important:** Go3DS builds upon existing human-developed open-source software, including Godot Engine and SeleDreams' original Nintendo 3DS port. Those contributions are not claimed as AI-generated work.
 
-## Free, open source and community-driven
+The project is transparent about its development process and aims to improve code quality, stability, and compatibility over time.
 
-Godot is completely free and open source under the very permissive [MIT license](https://godotengine.org/license).
-No strings attached, no royalties, nothing. The users' games are theirs, down
-to the last line of engine code. Godot's development is fully independent and
-community-driven, empowering users to help shape their engine to match their
-expectations. It is supported by the [Godot Foundation](https://godot.foundation/)
-not-for-profit.
+**100% vibe-coded. 100% open source. Made for the Nintendo 3DS.**
 
-Before being open sourced in [February 2014](https://github.com/godotengine/godot/commit/0b806ee0fc9097fa7bda7ac0109191c9c5e0a1ac),
-Godot had been developed by [Juan Linietsky](https://github.com/reduz) and
-[Ariel Manzur](https://github.com/punto-) (both still maintaining the project)
-for several years as an in-house engine, used to publish several work-for-hire
-titles.
+---
 
-![Screenshot of a 3D scene in the Godot Engine editor](https://raw.githubusercontent.com/godotengine/godot-design/master/screenshots/editor_tps_demo_1920x1080.jpg)
+## ✨ Features
 
-## Getting the engine
+Go3DS extends the existing Godot runtime with Nintendo 3DS-specific functionality.
 
-### Binary downloads
+### 🎨 2D Rendering
 
-Official binaries for the Godot editor and the export templates can be found
-[on the Godot website](https://godotengine.org/download).
+The experimental renderer uses Nintendo 3DS graphics libraries, including Citro2D and Citro3D.
 
-### Compiling from source
+Features implemented or demonstrated in development builds include:
 
-[See the official docs](https://docs.godotengine.org/en/latest/contributing/development/compiling)
-for compilation instructions for every supported platform.
+- Sprite2D rendering
+- Texture loading and GPU texture caching
+- Texture atlas regions
+- Dynamic texture region switching
+- Sprite rotation and scaling
+- Horizontal and vertical flipping
+- Transparency and alpha blending
+- Canvas clipping
+- Basic 2D drawing primitives
+- Camera2D transformations
+- CanvasLayer rendering
+- Draw ordering and canvas transforms
 
-## Community and contributing
+Some features may have limitations compared with standard Godot 4 rendering.
 
-Godot is not only an engine but an ever-growing community of users and engine
-developers. The main community channels are listed [on the homepage](https://godotengine.org/community).
+### 📜 GDScript
 
-The best way to get in touch with the core engine developers is to join the
-[Godot Contributors Chat](https://chat.godotengine.org).
+Go3DS uses Godot's existing GDScript runtime.
 
-To get started contributing to the project, see the [contributing guide](CONTRIBUTING.md).
-This document also includes guidelines for reporting bugs.
+The goal is to support normal Godot scripting workflows without requiring a separate programming language or custom game engine API.
 
-## Documentation and demos
+### 🧩 Godot Scenes and Resources
 
-The official documentation is hosted on [Read the Docs](https://docs.godotengine.org).
-It is maintained by the Godot community in its own [GitHub repository](https://github.com/godotengine/godot-docs).
+Go3DS aims to preserve compatibility with standard Godot project formats:
 
-The [class reference](https://docs.godotengine.org/en/latest/classes/)
-is also accessible from the Godot editor.
+- `.tscn` — Godot scenes
+- `.tres` — Godot resources
+- `.gd` — GDScript files
+- `.pck` — Packaged game resources
+- `project.godot` — Project configuration
 
-We also maintain official demos in their own [GitHub repository](https://github.com/godotengine/godot-demo-projects)
-as well as a list of [awesome Godot community resources](https://github.com/godotengine/awesome-godot).
+Support for individual nodes and engine features depends on the current implementation.
 
-There are also a number of other
-[learning resources](https://docs.godotengine.org/en/latest/community/tutorials.html)
-provided by the community, such as text and video tutorials, demos, etc.
-Consult the [community channels](https://godotengine.org/community)
-for more information.
+### 🛠️ Debugging and Diagnostics
 
-[![Code Triagers Badge](https://www.codetriage.com/godotengine/godot/badges/users.svg)](https://www.codetriage.com/godotengine/godot)
-[![Translate on Weblate](https://hosted.weblate.org/widgets/godot-engine/-/godot/svg-badge.svg)](https://hosted.weblate.org/engage/godot-engine/?utm_source=widget)
-[![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/godotengine/godot)](https://www.tickgit.com/browse?repo=github.com/godotengine/godot)
+Development builds include diagnostic functionality such as:
+
+- Runtime console output
+- Frame-rate monitoring
+- Memory statistics
+- GPU texture upload statistics
+- Renderer testing scenes
+
+An experimental texture-atlas test using 16 Sprite2D nodes demonstrated approximately 60 FPS in Azahar, with a single GPU texture upload reported.
+
+This is a specific test result, not a general performance guarantee.
+
+---
+
+## 🗺️ Development Roadmap
+
+The main objective is to make Go3DS capable of running complete 2D games on Nintendo 3DS hardware.
+
+| Feature | Status |
+|---|---|
+| Godot runtime startup | ✅ Working |
+| GDScript execution | ✅ Working |
+| Basic Sprite2D rendering | ✅ Experimental |
+| Texture atlas regions | ✅ Experimental |
+| Sprite transformations | ✅ Experimental |
+| Camera2D support | ✅ Experimental |
+| Basic 2D drawing primitives | 🧪 Experimental |
+| CanvasLayer support | 🧪 Experimental |
+| AnimatedSprite2D | 🚧 In development |
+| Native Nintendo 3DS controls | 🚧 In development |
+| 2D physics and collisions | 📋 Planned / validation pending |
+| TileMapLayer | 📋 Planned |
+| Scene switching | 📋 Planned / validation pending |
+| Playable 2D platformer demo | 📋 Planned |
+| Dual-screen rendering | 📋 Planned |
+| Touchscreen support | 📋 Planned |
+| Audio playback | 📋 Planned |
+| Godot editor export integration | 📋 Long-term goal |
+| 3D rendering | 📋 Not a current priority |
+
+Statuses reflect the development milestones discussed so far and should be updated as implementation and testing progress.
+
+### 🎯 Current Priorities
+
+**Milestone 1 — Playable 2D Game**
+
+Develop a basic platformer demonstrating sprites, animation, input, physics, collisions, and scene transitions.
+
+**Milestone 2 — Nintendo 3DS Hardware Integration**
+
+Improve compatibility with native controls, dual-screen rendering, and touchscreen input.
+
+**Milestone 3 — Stability and Performance**
+
+Optimize rendering, memory usage, resource management, and runtime performance on original Nintendo 3DS hardware.
+
+**Milestone 4 — Developer Experience**
+
+Simplify project packaging, documentation, build configuration, and eventually integration with the Godot editor's export workflow.
+
+---
+
+## 🎮 How It Works
+
+Go3DS packages the Godot runtime into a Nintendo 3DS executable using the open-source devkitPro toolchain.
+
+The resulting application is built as a `.3dsx` file.
+
+### Project Packaging
+
+The inherited port bundles the Godot project in the ROM filesystem located at:
+
+`platform/3ds/romfs`
+
+The runtime starts with arguments equivalent to:
+
+```bash
+--main-pack romfs:/Game.pck --display-driver 3ds --audio-driver Dummy
+```
+
+The packaged Godot project is loaded from:
+
+```text
+romfs:/Game.pck
+```
+
+To change which project is launched, replace the bundled `Game.pck` with a compatible Godot project package and rebuild the application.
+
+The `Dummy` audio driver is currently used by this inherited startup configuration, so normal audio playback should not be assumed to work.
+
+The long-term goal is to make this process much easier through improved packaging and export tooling.
+
+---
+
+## 🔧 Building Go3DS
+
+Go3DS currently uses a development build process based on the original port.
+
+### Requirements
+
+You will need:
+
+- Python and SCons
+- devkitPro
+- devkitARM toolchain
+- libctru
+- 3ds-freetype
+- 3ds-bzip2
+- 3ds-libpng
+- 3ds-zlib
+
+The renderer also uses Citro2D and Citro3D.
+
+Additional development dependencies may be necessary depending on the current source revision.
+
+### Installing devkitPro
+
+Follow the official installation instructions:
+
+https://devkitpro.org/wiki/Getting_Started
+
+Make sure the devkitPro tools directory is available in your system's PATH.
+
+The build system requires tools such as:
+
+```text
+3dsxtool
+picasso
+```
+
+You can check whether `3dsxtool` is available by running:
+
+```bash
+3dsxtool
+```
+
+If the command cannot be found, check your devkitPro installation and PATH configuration.
+
+### Compiling
+
+From the repository root, the original port uses:
+
+```bash
+scons platform=3ds target=template_release devkitpro=/path/to/devkitpro
+```
+
+Replace `/path/to/devkitpro` with the path to your devkitPro installation.
+
+**Note:** This is the inherited build command. Updated Go3DS build scripts or environment configurations may require additional arguments. Consult the repository's development documentation for the latest verified procedure.
+
+### Running
+
+Once compiled, the `.3dsx` executable can be tested using a compatible Nintendo 3DS emulator, such as Azahar, or on supported homebrew-enabled Nintendo 3DS hardware.
+
+Emulator behavior and performance may differ from real hardware.
+
+---
+
+## 🕹️ Developing Games with Go3DS
+
+The intended workflow is:
+
+1. Create a lightweight 2D game using a compatible Godot 4 editor.
+2. Use supported Godot nodes, scenes, resources, and GDScript functionality.
+3. Package the project into a `Game.pck` file.
+4. Include the package in the Go3DS ROM filesystem.
+5. Build the Nintendo 3DS executable.
+6. Test the game in an emulator or on compatible hardware.
+
+Not all Godot nodes or features are supported yet.
+
+Go3DS is currently a developing runtime port, not a complete replacement for the standard Godot editor.
+
+### Performance Considerations
+
+The Nintendo 3DS has significantly more limited processing power and memory than modern desktop systems.
+
+Developers should favor:
+
+- Lightweight 2D scenes
+- Small and reusable textures
+- Texture atlases
+- Reasonable sprite counts
+- Efficient scripts
+- Minimal unnecessary allocations
+- Careful memory management
+
+Actual performance will depend on the game, hardware model, and engine implementation.
+
+---
+
+## ⚠️ Known Limitations
+
+Go3DS is still experimental.
+
+Current limitations include:
+
+- Incomplete Godot 4 feature compatibility.
+- An experimental 2D renderer.
+- Incomplete or unverified support for certain CanvasItem operations.
+- Limited hardware-specific integration.
+- No established general-purpose export workflow.
+- Audio support not yet established.
+- 3D rendering is not currently a development priority.
+- Potential differences between emulator and real hardware behavior.
+
+Bugs, crashes, graphical glitches, and performance issues should be expected.
+
+---
+
+## 📜 License and Legality
+
+Go3DS is built upon the open-source [Godot Engine](https://godotengine.org/), which is distributed under the MIT license.
+
+The original Godot copyright notices, license files, and applicable third-party licensing requirements must be preserved.
+
+Go3DS uses open-source Nintendo 3DS homebrew development tools rather than Nintendo's proprietary SDK.
+
+No proprietary Nintendo SDK is required by the documented development workflow.
+
+Using an open-source toolchain does not automatically resolve every possible legal question. Developers remain responsible for the legality and licensing of their own projects, assets, dependencies, and distribution methods.
+
+**Go3DS is not affiliated with, sponsored by, or endorsed by Nintendo or the Godot Foundation.**
+
+Nintendo 3DS is a trademark of Nintendo.
+
+---
+
+## ❤️ Credits and Acknowledgements
+
+Go3DS would not exist without the work of the developers and communities behind the projects it builds upon.
+
+### Godot Engine
+
+[Godot Engine](https://godotengine.org/)
+
+Originally created by Juan Linietsky and Ariel Manzur, and developed by the wider Godot community.
+
+Godot is free and open-source software distributed under the MIT license.
+
+### Original Nintendo 3DS Port
+
+[SeleDreams — godot-4-3ds](https://github.com/SeleDreams/godot-4-3ds)
+
+The original Godot 4 Nintendo 3DS port established the foundation for executing the Godot runtime and GDScript on Nintendo 3DS.
+
+Go3DS continues development from this work.
+
+### Go3DS Dev
+
+[Go3DS-Dev](https://github.com/Go3DS-Dev)
+
+Project direction, development planning, feature requirements, build testing, integration, and ongoing maintenance.
+
+### OpenAI Codex
+
+AI-assisted code generation, implementation, debugging, and development support.
+
+Go3DS openly acknowledges its vibe-coded development process.
+
+### Open-Source Homebrew Community
+
+Special thanks to the developers and contributors behind:
+
+- devkitPro
+- devkitARM
+- libctru
+- Citro2D
+- Citro3D
+- Other open-source dependencies used by the project
+
+Each dependency remains subject to its own licensing and attribution requirements.
+
+---
+
+## 🤝 Contributing
+
+Go3DS is intended to be an open-source community project.
+
+Contributions are welcome, including:
+
+- Bug reports
+- Code reviews
+- Renderer improvements
+- Performance optimizations
+- Hardware compatibility testing
+- Documentation
+- Example games
+- Build system improvements
+
+Because the project is heavily AI-generated, experienced developers reviewing code quality, correctness, and performance are particularly valuable.
+
+If you discover a bug, please include reproduction steps, the hardware or emulator used, and any relevant logs.
+
+Contributions should respect the existing project structure, compatibility goals, and licensing requirements.
+
+---
+
+## 🔗 Links
+
+**Go3DS Engine**
+
+https://github.com/Go3DS-Dev/godot-4-3ds
+
+**Original Nintendo 3DS Port**
+
+https://github.com/SeleDreams/godot-4-3ds
+
+**Godot Engine**
+
+https://godotengine.org/
+
+**devkitPro**
+
+https://devkitpro.org/
+
+**Azahar Emulator**
+
+https://azahar-emu.org/
+
+---
+
+### 🎮 Go3DS Engine
+
+**Make games in Godot. Play them on your Nintendo 3DS.**
+
+*Fully vibe-coded. Open source. Still experimental.*
+
+*Unofficial project — not affiliated with Nintendo or the Godot Foundation.*

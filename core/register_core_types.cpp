@@ -279,7 +279,11 @@ void register_core_types() {
 	resource_loader_gdextension.instantiate();
 	ResourceLoader::add_resource_format_loader(resource_loader_gdextension);
 
+#ifdef __3DS__
+	print_line("3DS: networking unavailable (no IP backend registered).");
+#else
 	ip = IP::create();
+#endif
 
 	_geometry_2d = memnew(core_bind::Geometry2D);
 	_geometry_3d = memnew(core_bind::Geometry3D);
@@ -332,7 +336,9 @@ void register_core_singletons() {
 	GDREGISTER_CLASS(Time);
 
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ProjectSettings", ProjectSettings::get_singleton()));
-	Engine::get_singleton()->add_singleton(Engine::Singleton("IP", IP::get_singleton(), "IP"));
+	if (IP::get_singleton()) {
+		Engine::get_singleton()->add_singleton(Engine::Singleton("IP", IP::get_singleton(), "IP"));
+	}
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Geometry2D", core_bind::Geometry2D::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("Geometry3D", core_bind::Geometry3D::get_singleton()));
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ResourceLoader", core_bind::ResourceLoader::get_singleton()));

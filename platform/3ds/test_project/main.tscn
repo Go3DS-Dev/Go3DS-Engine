@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://main.gd" id="1"]
+
+[node name="CanvasTest" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["fixture_sprites"]]
+position = Vector2(180, 105)
+scale = Vector2(1.5, 1.5)
+
+[node name="Pivot" type="Node2D" parent="."]
+position = Vector2(145, 45)
+scale = Vector2(1.2, 0.9)
+
+[node name="RotatingSprite" type="Sprite2D" parent="Pivot" groups=["fixture_sprites"]]
+rotation = 0.3
+
+[node name="FlipH" type="Sprite2D" parent="." groups=["fixture_sprites"]]
+position = Vector2(220, 40)
+flip_h = true
+
+[node name="FlipV" type="Sprite2D" parent="." groups=["fixture_sprites"]]
+position = Vector2(270, 40)
+flip_v = true
+
+[node name="NegativeX" type="Sprite2D" parent="." groups=["fixture_sprites"]]
+position = Vector2(320, 40)
+scale = Vector2(-1, 1)
+
+[node name="NegativeY" type="Sprite2D" parent="." groups=["fixture_sprites"]]
+position = Vector2(370, 40)
+scale = Vector2(1, -1)
+
+; Front deliberately precedes Back in tree order, but has higher z_index.
+[node name="Front" type="Sprite2D" parent="." groups=["fixture_sprites"]]
+position = Vector2(90, 180)
+scale = Vector2(2, 2)
+z_index = 2
+modulate = Color(1, 0.5, 1, 0.65)
+
+[node name="Back" type="Sprite2D" parent="." groups=["fixture_sprites"]]
+position = Vector2(65, 155)
+scale = Vector2(2, 2)
+z_index = 1
+
+[node name="ClipBox" type="Control" parent="."]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 130.0
+offset_right = 356.0
+offset_bottom = 210.0
+clip_contents = true
+mouse_filter = 2
+
+[node name="ClippedSprite" type="Sprite2D" parent="ClipBox" groups=["fixture_sprites"]]
+position = Vector2(48, 40)
+scale = Vector2(2.5, 2.5)

@@ -167,9 +167,9 @@ def configure_cross(env):
 	env.Append(CCFLAGS=['-U__INT32_TYPE__', '-U__UINT32_TYPE__', '-D__INT32_TYPE__=int','-D__UINT32_TYPE__=unsigned int', '-U__UINT32_MAX__', '-U__INT32_MAX__','-D__UINT32_MAX__=4294967295U', '-D__INT32_MAX__=2147483647'])
 	env.Append(CCFLAGS=['-DDISABLE_DEPRECATED'])
 	if env["target"] == "template_debug":
-		env.Append(LIBS=['citro3dd', 'ctrud', 'freetype', 'bz2', 'png', 'z'])
+		env.Append(LIBS=['citro2dd', 'citro3dd', 'ctrud', 'freetype', 'bz2', 'png', 'z'])
 	else:
-		env.Append(LIBS=['citro3d', 'ctru', 'freetype', 'bz2', 'png', 'z'])
+		env.Append(LIBS=['citro2d', 'citro3d', 'ctru', 'freetype', 'bz2', 'png', 'z'])
 
 
 def configure_misc(env):

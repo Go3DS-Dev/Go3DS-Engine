@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://main.gd" id="1"]
+[ext_resource type="Script" path="res://shapes.gd" id="2"]
+
+[node name="Primitives" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1")
+
+[node name="Rotor" type="Node2D" parent="."]
+position = Vector2(225, 100)
+scale = Vector2(1.2, 0.8)
+modulate = Color(0.7, 1, 1, 0.9)
+script = ExtResource("2")
+
+[node name="Foreground" type="Node2D" parent="."]
+position = Vector2(90, 185)
+z_index = 2
+script = ExtResource("2")
+kind = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(80, 180)
+scale = Vector2(2, 2)
+z_index = 1
+
+[node name="ClipBox" type="Control" parent="."]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 125.0
+offset_right = 380.0
+offset_bottom = 215.0
+clip_contents = true
+mouse_filter = 2
+
+[node name="Shapes" type="Node2D" parent="ClipBox"]
+position = Vector2(40, 45)
+script = ExtResource("2")
+kind = 1

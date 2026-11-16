@@ -33,7 +33,7 @@
 
 #include "servers/display_server.h"
 
-#include "servers/rendering/dummy/rasterizer_dummy.h"
+#include "platform/3ds/servers/rendering/rasterizer_3ds.h"
 #include "scene/main/scene_tree.h"
 
 class DisplayServer3DS : public DisplayServer {
@@ -48,7 +48,12 @@ private:
 
 	static DisplayServer *create_func(const String &p_rendering_driver, DisplayServer::WindowMode p_mode, DisplayServer::VSyncMode p_vsync_mode, uint32_t p_flags, const Vector2i *p_position, const Vector2i &p_resolution, int p_screen, Context p_context, Error &r_error) {
 		r_error = OK;
-		RasterizerDummy::make_current();
+		if (!Rasterizer3DS::initialize_gpu()) {
+			r_error = ERR_CANT_CREATE;
+			return nullptr;
+		}
+		Rasterizer3DS::make_current();
+		print_line("3DS: Citro2D canvas backend selected (single top viewport).");
 		return memnew(DisplayServer3DS());
 	}
 
@@ -75,7 +80,7 @@ public:
 	int get_screen_count() const override { return 1; }
 	int get_primary_screen() const override { return 0; };
 	Point2i screen_get_position(int p_screen = SCREEN_OF_MAIN_WINDOW) const override { return Point2i(); }
-	Size2i screen_get_size(int p_screen = SCREEN_OF_MAIN_WINDOW) const override { return Size2i(); }
+	Size2i screen_get_size(int p_screen = SCREEN_OF_MAIN_WINDOW) const override { return Size2i(400, 240); }
 	Rect2i screen_get_usable_rect(int p_screen = SCREEN_OF_MAIN_WINDOW) const override { return Rect2i(); }
 	int screen_get_dpi(int p_screen = SCREEN_OF_MAIN_WINDOW) const override { return 96; /* 0 might cause issues */ }
 	float screen_get_scale(int p_screen = SCREEN_OF_MAIN_WINDOW) const override { return 1; }
@@ -120,17 +125,17 @@ public:
 	void window_set_transient(WindowID p_window, WindowID p_parent) override {}
 
 	void window_set_max_size(const Size2i p_size, WindowID p_window = MAIN_WINDOW_ID) override {}
-	Size2i window_get_max_size(WindowID p_window = MAIN_WINDOW_ID) const override { return Size2i(); }
+	Size2i window_get_max_size(WindowID p_window = MAIN_WINDOW_ID) const override { return Size2i(400, 240); }
 
 	void window_set_min_size(const Size2i p_size, WindowID p_window = MAIN_WINDOW_ID) override {}
-	Size2i window_get_min_size(WindowID p_window = MAIN_WINDOW_ID) const override { return Size2i(); }
+	Size2i window_get_min_size(WindowID p_window = MAIN_WINDOW_ID) const override { return Size2i(400, 240); }
 
 	void window_set_size(const Size2i p_size, WindowID p_window = MAIN_WINDOW_ID) override {}
-	Size2i window_get_size(WindowID p_window = MAIN_WINDOW_ID) const override { return Size2i(); }
-	Size2i window_get_size_with_decorations(WindowID p_window = MAIN_WINDOW_ID) const override { return Size2i(); }
+	Size2i window_get_size(WindowID p_window = MAIN_WINDOW_ID) const override { return Size2i(400, 240); }
+	Size2i window_get_size_with_decorations(WindowID p_window = MAIN_WINDOW_ID) const override { return Size2i(400, 240); }
 
 	void window_set_mode(WindowMode p_mode, WindowID p_window = MAIN_WINDOW_ID) override {}
-	WindowMode window_get_mode(WindowID p_window = MAIN_WINDOW_ID) const override { return WINDOW_MODE_MINIMIZED; }
+	WindowMode window_get_mode(WindowID p_window = MAIN_WINDOW_ID) const override { return WINDOW_MODE_WINDOWED; }
 
 	void window_set_vsync_mode(VSyncMode p_vsync_mode, WindowID p_window = MAIN_WINDOW_ID) override {}
 	VSyncMode window_get_vsync_mode(WindowID p_window) const override { return VSyncMode::VSYNC_ENABLED; }
@@ -144,9 +149,9 @@ public:
 	void window_move_to_foreground(WindowID p_window = MAIN_WINDOW_ID) override {}
 	bool window_is_focused(WindowID p_window = MAIN_WINDOW_ID) const override { return true; };
 
-	bool window_can_draw(WindowID p_window = MAIN_WINDOW_ID) const override { return false; }
+	bool window_can_draw(WindowID p_window = MAIN_WINDOW_ID) const override { return true; }
 
-	bool can_any_window_draw() const override { return false; }
+	bool can_any_window_draw() const override { return true; }
 
 	void window_set_ime_active(const bool p_active, WindowID p_window = MAIN_WINDOW_ID) override {}
 	void window_set_ime_position(const Point2i &p_pos, WindowID p_window = MAIN_WINDOW_ID) override {}

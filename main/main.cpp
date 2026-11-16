@@ -2090,12 +2090,26 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		default_renderer_mobile = "gl_compatibility";
 	}
 #endif
+#ifdef __3DS__
+	// The platform supplies its own minimal Citro2D canvas compositor.
+	renderer_hints = "3ds";
+	default_renderer_mobile = "3ds";
+	if (rendering_method.is_empty()) {
+		rendering_method = "3ds";
+	}
+	if (rendering_driver.is_empty()) {
+		rendering_driver = "3ds";
+	}
+#endif
 	if (renderer_hints.is_empty()) {
 		ERR_PRINT("No renderers available.");
 	}
 
 	if (!rendering_method.is_empty()) {
 		if (rendering_method != "forward_plus" &&
+#ifdef __3DS__
+				rendering_method != "3ds" &&
+#endif
 				rendering_method != "mobile" &&
 				rendering_method != "gl_compatibility") {
 			OS::get_singleton()->print("Unknown renderer name '%s', aborting. Valid options are: %s\n", rendering_method.utf8().get_data(), renderer_hints.utf8().get_data());
@@ -2149,6 +2163,11 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 		// Now validate whether the selected driver matches with the renderer.
 		bool valid_combination = false;
 		Vector<String> available_drivers;
+#ifdef __3DS__
+		if (rendering_method == "3ds") {
+			available_drivers.push_back("3ds");
+		}
+#endif
 		if (rendering_method == "forward_plus" || rendering_method == "mobile") {
 #ifdef VULKAN_ENABLED
 			available_drivers.push_back("vulkan");
